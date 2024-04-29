@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div class="clientRegister">
+
+        <ul class="clientRegister__tabs">
+            <li><a href="#tab1">Регистрация клиентов</a></li>
+            <li><a href="#tab2">Список клиентов</a></li>
+        </ul>
+
+        <div class="clientRegister__content">
+            <div id="tab1" class="clientRegister__content-block table__block">
+
+                <div class="registration">
+                    <div class="container">
+                        <div class="registration__content">
+
+                            <form action="{{ route('registration-client-store') }}" method="post">
+
+                                <div class="registration__content-block">
+                                    <div class="freeBlock">
+                                        <label for="name">Ф.И.О <span>*</span></label>
+                                        <input type="text" id="name" name="client_name" value="{{ old('client_name') }}"
+                                            required>
+                                    </div>
+
+                                    <div id="phoneFields">
+                                        <div>
+                                            <div class="freeBlock">
+                                                <label>Главный Номер телефона <span>*</span></label>
+                                                <input type="text" class="phoneInput" name="client_phoneNumber[]"
+                                                    value="{{ old('client_phoneNumber') }}" required>
+                                            </div>
+                                            <button type="button" class="plus__btn" id="addPhone">+</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="freeBlock">
+                                        <label for="date">Дата рождения</label>
+                                        <input type="date" id="date" name="client_dateBirth"
+                                            value="{{ old('client_dateBirth') }}">
+                                    </div>
+
+                                    <div class="freeBlock">
+                                        <label for="subject">Предмет <span>*</span></label>
+                                        <select id="subject" name="subject_id">
+                                            <option disabled selected>Выберите Предмет</option>
+                                            @foreach($subjects as $subject)
+                                            <option value="{{ $subject->id }}"
+                                                data-groups="{{ json_encode($subject->groups) }}"
+                                                data-price="{{ $subject->subject_price }}">{{ $subject->subject_name }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="freeBlock">
+                                        <label for="group">Группа <span>*</span></label>
+                                        <select id="group" name="group_id">
+                                            <option disabled selected>Выберите Группу</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="readonlyBlock">
+                                        <label>Цена предмета <span>*</span></label>
+                                        <input type="text" name="subject_price" id="subjectPrice" readonly>
+                                    </div>
+
+                                    <div class="freeBlock">
+                                        <label>Скидка <span>*</span></label>
+                                        <select name="client_discount" id="clientDiscount">
+                                            <option disabled selected>Выберите Скидку</option>
+                                            <option value="0">0%</option>
+                                            <option value="5">5%</option>
+                                            <option value="10">10%</option>
+                                            <option value="15">15%</option>
+                                            <option value="20">20%</option>
+                                            <option value="25">25%</option>
+                                            <option value="30">30%</option>
+                                            <option value="35">35%</option>
+                                            <option value="40">40%</option>
+                                            <option value="45">45%</option>
+                                            <option value="50">50%</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="readonlyBlock">
+                                        <label>Цена со скидкой <span>*</span></label>
+                                        <input type="text" name="client_discountPrice" id="discountedPrice" readonly>
+                                    </div>
+
+                                    <div class="freeBlock">
+                                        <label>Примерное расписание</label>
+                                        <select name="schedule_id">
+                                            @foreach($schedules as $schedule)
+                                            <option value="{{ $schedule->id }}">{{ $schedule->schedule_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="readonlyBlock">
+                                        <label for="">Ответственный <span>*</span></label>
+                                        <input type="text" value="Мардон Админ" readonly>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="register__btn"><i
+                                        class="fa-solid fa-plus"></i><span>Регистрировать</span></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="tab2" class="clientRegister__content-block">
+
+                <div class="clientRegister__filter">
+                    <h2>Фильтр</h2>
+
+                    <div>
+                        <div>
+                            <label for="year">Год:</label>
+                            <select id="year">
+                                <option value="">Все</option>
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="month">Месяц:</label>
+                            <select id="month">
+                                <option value="">Все</option>
+                                <option value="Январь">Январь</option>
+                                <option value="Февраль">Февраль</option>
+                                <option value="Март">Март</option>
+                                <option value="Апрель">Апрель</option>
+                                <option value="Май">Май</option>
+                                <option value="Июнь">Июнь</option>
+                                <option value="Июль">Июль</option>
+                                <option value="Август">Август</option>
+                                <option value="Сентябрь">Сентябрь</option>
+                                <option value="Октябрь">Октябрь</option>
+                                <option value="Декабрь">Декабрь</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="tableSubject">Предмет:</label>
+                            <select id="tableSubject">
+                                <option value="">Все</option>
+                                <option value="Frontend">Frontend</option>
+                                <option value="Backend">Backend</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="tableGroup">Группа:</label>
+                            <select id="tableGroup">
+                                <option value="">Все</option>
+                                <option value="11-группа (новая группа)">11-группа (новая группа)</option>
+                                <option value="5-группа">5-группа</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="client__table">
+                    <h3>Список клиентов</h3>
+
+                    <table id="clientRegister__table" class="clientRegister__table clientRegister__list"
+                        style="width: 100%;">
+
+
+                        <thead>
+                            <tr>
+                                <th scope="col" style="z-index: 10;"><b>№</b></th>
+                                <th scope="col" style="z-index: 10;">Ф.И.О</th>
+                                <th scope="col" style="z-index: 10;">Номер телефона</th>
+                                <th scope="col">Дата рождения</th>
+                                <th scope="col">Предмет</th>
+                                <th scope="col">Группа</th>
+                                <th scope="col">Цена предмета</th>
+                                <th scope="col">Скидка</th>
+                                <th scope="col">Цена со скидкой</th>
+                                <th scope="col">Примерное расписание</th>
+                                <th scope="col">Подробнее</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <!-- 1 -->
+                            <tr>
+                                <td data-label="№:" class="number"><span style="background: red;">1</span></td>
+                                <td data-label="Ф.И.О:">Yunusov Daler</td>
+                                <td data-label="Номер телефона:">+998 (99) 000 00 00</td>
+                                <td data-label="Дата рождения:">13.12.2004</td>
+                                <td data-label="Предмет:" class="object"><span>Frontend</span></td>
+                                <td data-label="Группа:">11-группа (новая группа)</td>
+                                <td data-label="Цена предмета:" class="price"><span>1 000 000</span></td>
+                                <td data-label="Скидка:">15%</td>
+                                <td data-label="Цена со скидкой:" class="disPrice"><span>850 000</span></td>
+                                <td data-label="Примерное расписание:" class="clientSchedule">
+                                    <div class="clientSchedule-text">Пн и Пт (14:00 - 15:30 или 15:30 - 17:00)
+                                    </div>
+                                </td>
+                                <td data-label="Подробнее:"><a href="#">
+                                        <button>Подробнее</button>
+                                    </a>
+                                </td>
+                            </tr>
+
+                            <!-- 2 -->
+                            <tr>
+                                <td data-label="№:" class="number"><span style="background: green;">2</span>
+                                </td>
+                                <td data-label="Ф.И.О:">Abdugafforov Zafar</td>
+                                <td data-label="Номер телефона:">+998 (99) 999 99 99</td>
+                                <td data-label="Дата рождения:">20.11.2003</td>
+                                <td data-label="Предмет:" class="object"><span>Backend</span></td>
+                                <td data-label="Группа:">5-группа</td>
+                                <td data-label="Цена предмета:" class="price"><span>1 000 000</span></td>
+                                <td data-label="Скидка:">15%</td>
+                                <td data-label="Цена со скидкой:" class="disPrice"><span>850 000</span></td>
+                                <td data-label="Примерное расписание:" class="clientSchedule">
+                                    <div class="clientSchedule-text">Пн и Пт (14:00 - 15:30 или 15:30 - 17:00)
+                                    </div>
+                                </td>
+                                <td data-label="Подробнее:"><a href="#">
+                                        <button>Подробнее</button>
+                                    </a>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
